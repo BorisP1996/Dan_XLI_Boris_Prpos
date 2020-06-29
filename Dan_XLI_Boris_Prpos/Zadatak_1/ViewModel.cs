@@ -22,6 +22,7 @@ namespace Zadatak_1
             main = mainOpen;
             worker.DoWork += DoWork;
             worker.ProgressChanged += ProgressChanged;
+            worker.RunWorkerCompleted += RunWorkerCompleted;
             worker.WorkerReportsProgress = true;
             worker.WorkerSupportsCancellation = true;
             
@@ -63,6 +64,19 @@ namespace Zadatak_1
             {
                 message = value;
                 OnPropertyChanged("Message");
+            }
+        }
+        private string runing;
+        public string Runing
+        {
+            get
+            {
+                return runing;
+            }
+            set
+            {
+                runing = value;
+                OnPropertyChanged("Runing");
             }
         }
         private int copyNumber;
@@ -130,10 +144,14 @@ namespace Zadatak_1
             {
                 worker.RunWorkerAsync();
             }
+            else
+            {
+                Runing = "Printing already in progres.";
+            }
         }
         private bool CanStartPrintingExecute()
         {
-            if (String.IsNullOrEmpty(Text) || CopyNumber==0 || String.IsNullOrEmpty(CopyNumber.ToString()))
+            if (String.IsNullOrEmpty(Text) || CopyNumber.ToString()==null || CopyNumber==0 || String.IsNullOrWhiteSpace(CopyNumber.ToString()))
             {
                 return false;
             }
@@ -165,6 +183,7 @@ namespace Zadatak_1
                 path2 = path + temp + "." + DateTime.Now.Day.ToString() + "_" + DateTime.Now.Month.ToString() + "_" + DateTime.Now.Year.ToString() + "_" + DateTime.Now.Hour.ToString() + "_" + DateTime.Now.Minute.ToString() + ".txt";
                 Thread.Sleep(1000);
                 sw.Close();
+               
             }
             e.Result = sum;
         }
@@ -172,21 +191,23 @@ namespace Zadatak_1
         {
             if (e.Cancelled)
             {
-                Message = "You canceled";
+                Message = "Printing is canceled";
+                Runing = "Printing stopped";
               
             }
-            if (e.Error!=null)
+            else if (e.Error!=null)
             {
-                Console.WriteLine("Worker exception:"+e.Error.ToString());
+                Message="Worker exception:"+e.Error.ToString();
             }
-            else
+            else if (Progres>90)
             {
-                Console.WriteLine("Complete:"+e.Result);
+                Message = "Printing finished";
+               Runing = "";
             }
         }
         private void ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            Console.WriteLine("Reached:"+e.ProgressPercentage+"%");
+            Message = "Reached:"+e.ProgressPercentage.ToString()+"%";
             Progres = e.ProgressPercentage;
             
         }
