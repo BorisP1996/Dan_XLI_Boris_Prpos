@@ -5,8 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Zadatak_1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="PrintCenter" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Column="3" Grid.Row="3" Name="txtPlayerName" Height="90" Width="450"
+                 Text="{Binding Player.PlayerName, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Column="6" Grid.Row="3" Name="txtPosition" Height="20"
+                 Text="{Binding Player.Position, UpdateSourceTrigger=PropertyChanged}" Margin="128,10,-189,63"/>
+        <Button Grid.Column="3" Grid.Row="12" Name="btnSave" Content="Print" Height="20" Width="76" HorizontalAlignment="Left"
+                Command="{Binding Save, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SelectedItems.Count, ElementName=cmbTeam}" Margin="2,38,0,-37"/>
+        <Button Grid.Column="3" Grid.Row="12" Name="btnClose" Content="Cancel Printing" Height="20" Width="89" HorizontalAlignment="Right"
+                Command="{Binding Close, UpdateSourceTrigger=PropertyChanged}" Margin="0,38,243,-37"/>
+        <Label Grid.Column="6" Grid.Row="3" Name="lblTeamName" Content="Number of copies:" Padding="0" HorizontalAlignment="Right" Margin="0,13,-95,63"/>
+
     </Grid>
 </Window>
